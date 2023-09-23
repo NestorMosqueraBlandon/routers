@@ -1,0 +1,29 @@
+{
+  "name": "routers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start-node": "node dist/node-routers.js",
+    "start-ssh": "node dist/ssh.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.6.3",
+    "dotenv": "^16.3.1",
+    "mikronode": "^2.3.11",
+    "mikronode-ng": "^1.0.11",
+    "node-routeros": "^1.6.9",
+    "ssh2": "^1.14.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/ssh2": "^1.11.13"
+  }
+}
