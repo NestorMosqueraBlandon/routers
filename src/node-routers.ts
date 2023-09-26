@@ -6,7 +6,7 @@ const main = async () => {
       host: '191.102.96.11', 
       user: 'admintest',    
       password: 'Passwordz1000*', 
-      port: 8729,           
+      port: 8728,           
     });
   
     const clientIP = '10.20.50.21'; 
