@@ -1,18 +1,16 @@
 {
-    "compilerOptions": {
-      "target": "ES6",                   // Versión de ECMAScript a la que compilar (puedes cambiar a ES5 si es necesario)
-      "module": "CommonJS",              // Sistema de módulos (puedes cambiar a otro si es necesario)
-      "outDir": "./dist",                // Directorio de salida para los archivos compilados
-      "rootDir": "./src",                // Directorio de entrada donde se encuentra el código fuente TypeScript
-      "strict": true,                    // Habilitar modo estricto (recomendado)
-      "esModuleInterop": true,           // Habilitar interoperabilidad con módulos ES6
-      "skipLibCheck": true,              // Omitir la verificación de librerías de declaración de tipos
-      "forceConsistentCasingInFileNames": true, // Forzar consistencia en los nombres de archivos (para sistemas de archivos que no distinguen mayúsculas y minúsculas)
-      "resolveJsonModule": true,         // Permitir la importación de módulos JSON
-      "declaration": true,              // Generar archivos de declaración de tipos (.d.ts)
-      "sourceMap": true                 // Generar mapas de origen para facilitar la depuración
-    },
-    "include": ["src/**/*.ts"],          // Patrón para incluir archivos TypeScript
-    "exclude": ["node_modules"]           // Directorios o archivos excluidos de la compilación
-  }
-  
+  "compilerOptions": {
+    "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "module": "commonjs" /* Specify what module code is generated. */,
+    "rootDir": "./src" /* Specify the root folder within your source files. */,                   /* Only output d.ts files and not JavaScript files. */
+    "sourceMap": true /* Create source map files for emitted JavaScript files. */,
+    "outDir": "./build" /* Specify an output folder for all emitted files. */,
+           /* Allow 'import x from y' when a module doesn't have a default export. */
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    // "preserveSymlinks": true,                         /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    /* Type Checking */
+    "strict": true /* Enable all strict type-checking options. */,                      /* Skip type checking .d.ts files that are included with TypeScript. */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  },
+}
