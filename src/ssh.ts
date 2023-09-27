@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Client } from 'ssh2';
+import { Client, ConnectConfig } from 'ssh2';
 
 const host = process.env.HOST || '';
 const port = parseInt(process.env.PORT || '0', 10);
@@ -7,46 +7,64 @@ const username = process.env.USERNAME_D || '';
 const password = process.env.PASSWORD || '';
 const ip = process.env.IP || '';
 
-const handler = async (action: string, ip: string) => {
-    return new Promise<void>((resolve, reject) => {
-        const connection = new Client();
+const sshConfig: ConnectConfig = {
+    host: '191.102.96.11', // Cambia esto por la dirección IP de tu router
+    port: 22, // Puerto SSH por defecto
+    username: 'admintest', // Cambia esto por tu nombre de usuario
+    password: 'Passwordz1000*', // Cambia esto por tu contraseña
+  };
 
-        connection.on('ready', () => {
-            connection.shell((error, stream) => {
-                if (error) {
-                    throw new Error(error.message);
-                }
+  const targetIp = '10.20.50.21';
 
-                stream.on('data', (data: Buffer) => {
-                    const output = data.toString('utf-8');
-                    console.log(`OUTPUT: ${output}`)
-                });
+// Comando para habilitar la IP (ajusta esto según tu configuración)
+const enableIpCommand = `/ip arp enable [find address="${targetIp}"]`;
 
-                stream.on('close', (code: number, signal: string) => {
-                    if (code === 0) {
-                        console.log(`Acción ${action} exitosa para la dirección IP ${ip}`);
-                        resolve();
-                    } else {
-                        console.error(`Error al ejecutar la acción ${action} para la dirección IP ${ip}`);
-                        reject(new Error(`Error al ejecutar la acción ${action} para la dirección IP ${ip}`));
-                    }
-                    connection.end();
-                });
+// Comando para deshabilitar la IP (ajusta esto según tu configuración)
+const disableIpCommand = `/ip arp disable [find address="${targetIp}"]`;
 
-                stream.write(`/ip arp ${action} find address=${ip}\n`);
+function executeSshCommand(command: string): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    const conn = new Client();
 
-                stream.end();
+    conn.on('ready', () => {
+      conn.exec(command, (err, stream) => {
+        if (err) {
+          reject(err);
+        } else {
+          stream
+            .on('close', (code: any, signal: any) => {
+              conn.end();
+              resolve();
             })
-        }).connect({
-            host,
-            port,
-            username,
-            password,
-            readyTimeout: 60000
-        })
-    })
+            .on('data', (data: any) => {
+              console.log(`Comando ejecutado: ${data}`);
+            });
+        }
+      });
+    });
 
+    conn.on('error', (err) => {
+      reject(err);
+    });
+
+    conn.connect(sshConfig);
+  });
 }
 
+async function main() {
+  try {
+    console.log('Habilitando la IP...');
+    await executeSshCommand(enableIpCommand);
+    console.log('IP habilitada con éxito.');
 
-handler('enable',  ip);
+    // Puedes agregar un retardo aquí si es necesario
+
+    console.log('Deshabilitando la IP...');
+    await executeSshCommand(disableIpCommand);
+    console.log('IP deshabilitada con éxito.');
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+main();
